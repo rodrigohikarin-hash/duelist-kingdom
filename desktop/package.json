@@ -1,0 +1,67 @@
+{
+  "name": "duelist-kingdom-desktop",
+  "version": "1.1.0",
+  "description": "Duelist Kingdom para Windows — torneios e rankings TCG",
+  "main": "main.cjs",
+  "author": "Duelist Kingdom",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win nsis portable --x64"
+  },
+  "build": {
+    "appId": "br.duelistkingdom.desktop",
+    "productName": "Duelist Kingdom",
+    "copyright": "Duelist Kingdom · Projeto independente",
+    "directories": {
+      "output": "../kingdom-windows-build"
+    },
+    "files": [
+      "main.cjs",
+      "offline.html",
+      "icon.ico",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "icon": "icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Duelist Kingdom",
+      "artifactName": "Duelist-Kingdom-Instalador-${version}-x64.exe",
+      "installerLanguages": [
+        "pt_BR"
+      ],
+      "language": "1046",
+      "runAfterFinish": false
+    },
+    "portable": {
+      "artifactName": "Duelist-Kingdom-Portatil-${version}-x64.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.2.2",
+    "electron-builder": "^26.18.0"
+  }
+}
