@@ -1,0 +1,36 @@
+name: Importar codigo-fonte inicial
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    if: github.repository == 'rodrigohikarin-hash/duelist-kingdom'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verificar e extrair codigo-fonte
+        shell: python
+        run: |
+          from pathlib import Path
+          from zipfile import ZipFile
+          import hashlib
+          archive = Path('Duelist-Kingdom-Codigo-Fonte.zip')
+          expected = 'bb955ae26c6d0f9f6df691405333021d6388ade7ea24d18346c41104efc482de'
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == expected, 'Archive hash mismatch'
+          root = Path.cwd().resolve()
+          with ZipFile(archive) as z:
+              for member in z.infolist():
+                  target = (root / member.filename).resolve()
+                  assert target.is_relative_to(root), 'Invalid archive path'
+                  assert '.git' not in Path(member.filename).parts, 'Git internals are forbidden'
+              z.extractall(root)
+          archive.unlink()
+      - name: Registrar arquivos na branch main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add --all
+          git commit -m 'Importar codigo completo do Duelist Kingdom, cliente Windows e documentacao'
+          git push origin HEAD:main
