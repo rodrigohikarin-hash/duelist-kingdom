@@ -7,10 +7,12 @@ Plataforma para lojas e comunidades de TCG: Yu-Gi-Oh!, Pokémon, One Piece, Lorc
 - Lojas com dados separados e perfis de proprietário, funcionário, juiz e jogador.
 - Inscrições antecipadas, fila de espera e check-in por QR Code.
 - Mesas, resultados confirmados pelos dois jogadores e resolução pela arbitragem.
+- Suíço + Top Cut, com planejamento por jogo, seeds homologados e chave eliminatória.
+- Pareamentos manuais nos cinco jogos, com geração automática opcional.
 - Ranking mensal e títulos temáticos por jogo.
 - Fidelidade, recompensas, resgates e estorno de pontos.
 - Indicadores de presença, retorno, valores recebidos, custos e organização.
-- Temas claro/escuro e interface para celular.
+- Identidade visual por jogo, com ilustrações próprias, modos claro/escuro e interface para celular.
 - Cliente Windows em Electron, em `desktop/`.
 
 ## Tecnologias
@@ -42,12 +44,15 @@ O cliente abre o site publicado em janela própria e requer internet e uma conta
 ## Teste incluído
 ```sh
 node tests/monthly.mjs
+node tests/manual-pairings.mjs
+node tests/top-cut.mjs
 ```
 O projeto foi validado adicionalmente com 72 verificações isoladas de API e testes dos perfis suíços. A suíte de API original depende do ambiente local de criação; o teste mensal acima é portátil e está incluído no repositório.
 
 ## Documentação
 - [Guia para lojas](docs/guia-lojas.md)
 - [Estratégia comercial](docs/estrategia-comercial.md)
+- [Suíço + Top Cut: perfis e limites](docs/top-cut.md)
 
 ## Limites atuais
 Pagamentos, orçamento mensal e créditos contratados têm registro manual. Não há cobrança automática, gateway de pagamentos ou venda automática de créditos. O site permanece privado; convites da loja não concedem acesso à hospedagem.

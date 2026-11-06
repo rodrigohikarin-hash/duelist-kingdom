@@ -4,6 +4,8 @@
     const rows=event.players.map(p=>({...p,wins:0,losses:0,played:0,points:0,ddd:0,opponents:[]}));
     const byId=new Map(rows.map(p=>[p.id,p]));
     for(const m of event.matches){
+      if(m.phase==='cut')continue;
+      if(m.result==='bye'){const a=byId.get(m.a);if(a){a.played++;a.wins++;a.points+=3;}continue;}
       if(!['a','b','double'].includes(m.result))continue;
       const a=byId.get(m.a),b=byId.get(m.b);if(!a||!b)continue;
       for(const [p,op,side] of [[a,b,'a'],[b,a,'b']]){

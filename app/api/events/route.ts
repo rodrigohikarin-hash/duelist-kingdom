@@ -13,6 +13,16 @@ export async function PUT(req:Request){
   if(req.headers.get('origin')&&req.headers.get('origin')!==new URL(req.url).origin)return json({error:'Origem inválida.'},403);
   let body:any;try{const raw=await req.text();if(new TextEncoder().encode(raw).length>1800000)return json({error:'Torneio excede o limite de 1,8 MB.'},413);body=JSON.parse(raw);validateEvent(body.event);}catch(error){return json({error:error instanceof Error?error.message:'Dados inválidos.'},400);}
   const e=body.event,revision=body.revision;
+  const previous=await env.DB!.prepare('SELECT data FROM tournaments WHERE owner_id=? AND id=?').bind(owner,e.id).first<{data:string}>();
+  if(previous){
+    const before=JSON.parse(previous.data);
+    if(before.structure==='swiss-cut'&&before.status!=='open'){
+      if(e.status==='open')return json({error:'Um torneio iniciado pode ser reaberto para correções, sem reabrir as inscrições.'},400);
+      for(const key of ['structure','rounds','roundMinutes','cutPlan'])if(JSON.stringify(before[key])!==JSON.stringify(e[key]))return json({error:'O plano anunciado fica fixo após o início do torneio.'},400);
+      if(JSON.stringify(before.players.map((p:any)=>p.id))!==JSON.stringify(e.players.map((p:any)=>p.id)))return json({error:'A lista de participantes fica fixa após o início.'},400);
+      if(before.cutSeeds&&e.cutSeeds&&JSON.stringify(before.matches.filter((m:any)=>m.phase!=='cut'))!==JSON.stringify(e.matches.filter((m:any)=>m.phase!=='cut')))return json({error:'Reabra a classificação e remova o corte antes de corrigir o suíço.'},400);
+    }
+  }
   if(context.store&&context.role!=='judge'){
     const regs=await env.DB!.prepare("SELECT ranking_id FROM registrations WHERE store=? AND event=? AND status IN ('confirmed','checked')").bind(context.store,e.id).all<{ranking_id:string}>();
     const reserved=new Set(regs.results.map(r=>r.ranking_id));
