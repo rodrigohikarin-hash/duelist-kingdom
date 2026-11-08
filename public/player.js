@@ -1,23 +1,315 @@
-import {hasCut,champion,matchLabel} from './top-cut.mjs';
-import {GAMES,gameOf} from './swiss-core.mjs';
-const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let game='yugioh',events=[],ranking=null,request=0;
-try{game=Object.hasOwn(GAMES,localStorage.getItem('duel-arena-game'))?localStorage.getItem('duel-arena-game'):game;$('#journeyId').value=localStorage.getItem('kingdom-player-id')||'';}catch{}
-const requestedGame=new URLSearchParams(location.search).get('game');if(Object.hasOwn(GAMES,requestedGame)){game=requestedGame;try{localStorage.setItem('duel-arena-game',game);}catch{}}
-const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit'}).formatToParts(new Date());$('#journeyMonth').value=parts.find(p=>p.type==='year').value+'-'+parts.find(p=>p.type==='month').value;
-const playerId=()=>$('#journeyId').value.trim().toUpperCase();
-const empty=(title,text)=>`<div class="empty"><h3>${esc(title)}</h3><p>${esc(text)}</p></div>`;
-const badge=p=>p.monthlyTitle?`<span class="monthly-tier tier-${esc(p.monthlyTitle.id)}">${esc(p.monthlyTitle.label)}</span>`:'—';
-function tabs(){ $('.game-tabs').innerHTML=Object.entries(GAMES).map(([id,g])=>`<button role="tab" aria-selected="${id===game}" data-game="${id}">${esc(g.name)}</button>`).join('');document.querySelectorAll('[data-game]').forEach(b=>b.onclick=()=>{game=b.dataset.game;try{localStorage.setItem('duel-arena-game',game);}catch{}tabs();load();});}
-function render(){
- const id=playerId(),me=id?ranking?.standings.find(p=>p.rankingId===id):null;
- $('#personalSummary').innerHTML=!id?empty('Sua jornada tem um ID','Informe o ID cadastrado pelo organizador para consultar seu histórico e suas mesas.'):me?`<article class="player-personal"><span class="eyebrow">SUA TEMPORADA · ${esc(GAMES[game].name)}</span><h2>${esc(me.name)}</h2>${badge(me)}<div class="personal-stats"><div><span>Posição no mês</span><strong>${me.rank}º</strong></div><div><span>Pontos acumulados</span><strong>${me.points}</strong></div><div><span>Torneios concluídos</span><strong>${me.events}</strong></div></div><p>${me.wins} vitórias · ${me.draws||0} empates · ${me.losses} derrotas</p></article>`:empty('Seu próximo resultado começa aqui','Não há resultados de torneios encerrados para este ID no jogo e mês selecionados. Confira abaixo suas inscrições e mesas.');
- const filter=$('#playerFilter').value,query=$('#playerSearch').value.trim().toLocaleLowerCase('pt-BR'),month=$('#journeyMonth').value;
- const list=events.filter(e=>gameOf(e)===game&&e.date.slice(0,7)===month&&(filter==='all'||filter==='mine'&&id&&e.players.some(p=>p.rankingId?.trim().toUpperCase()===id)||e.status===filter)&&`${e.name} ${e.location}`.toLocaleLowerCase('pt-BR').includes(query));
- $('#playerEvents').innerHTML=list.length?list.map(e=>{const p=id?e.players.find(p=>p.rankingId?.trim().toUpperCase()===id):null;const matches=p?e.matches.filter(m=>m.a===p.id||m.b===p.id).sort((a,b)=>b.round-a.round):[];return `<article class="player-event"><div class="event-top"><div><h3>${esc(e.name)}</h3><p>${esc(e.date.split('-').reverse().join('/'))} · ${esc(e.time)} · ${esc(e.location)}</p></div><span class="badge ${esc(e.status)}">${{open:'Inscrições abertas',live:'Em andamento',done:'Encerrado'}[e.status]||''}</span></div><p>${esc(e.format)} · ${e.players.length}/${e.capacity} participantes · ${e.rounds} rodadas suíças${hasCut(e)&&e.cutPlan.size?' · Top '+e.cutPlan.size:''}${champion(e)?' · Campeão: '+esc(e.players.find(p=>p.id===champion(e))?.name):''}</p>${p?`<p><b>Inscrição encontrada: ${esc(p.name)}</b></p>${matches.length?matches.map(m=>{const opp=e.players.find(x=>x.id===(m.a===p.id?m.b:m.a));const result=m.result==='double'?'Derrota dupla':m.result==='bye'?'Vitória por bye':m.result==='draw'?'Empate':!m.result?'Aguardando resultado':m.result===(m.a===p.id?'a':'b')?'Vitória':'Derrota';return `<div class="my-match"><p><b>${matchLabel(e,m)} · ${m.result==='bye'?'Bye':'Mesa '+m.table}</b></p><p>${opp?'Contra '+esc(opp.name):'Sem adversário'} · ${result}</p></div>`;}).join(''):'<p>Suas mesas aparecerão quando o organizador publicar os emparceiramentos.</p>'}`:'<p>'+esc(id?'Este ID não está inscrito neste torneio.':'Consulte seu ID para encontrar suas mesas.')+'</p>'}<details><summary>Participantes (${e.players.length})</summary><p>${e.players.map(p=>esc(p.name)).join(' · ')||'Nenhum participante cadastrado.'}</p></details></article>`;}).join(''):empty('Nenhum torneio encontrado','Escolha outro mês ou ajuste os filtros. Para se inscrever, fale com o organizador.');
- const rows=ranking?.standings||[];
- $('#playerRankTable').innerHTML=rows.length?`<div class="ranking-scroll"><table><thead><tr><th>Pos.</th><th>Jogador</th>${['yugioh','pokemon','onepiece'].includes(game)?'<th>Elo do mês</th>':''}<th>Pontos</th><th>Torneios</th><th>V–E–D</th></tr></thead><tbody>${rows.map(p=>`<tr class="${id&&p.rankingId===id?'player-highlight':''}"><td>${p.rank}º</td><td>${esc(p.name)}${id&&p.rankingId===id?' · ID consultado':''}</td>${['yugioh','pokemon','onepiece'].includes(game)?'<td>'+badge(p)+'</td>':''}<td><b>${p.points}</b></td><td>${p.events}</td><td>${p.wins}–${p.draws||0}–${p.losses}</td></tr>`).join('')}</tbody></table></div><p class="honors-note">Elos calculados pelas regras da liga. Pokémon e One Piece têm um campeão e até quatro integrantes na faixa seguinte; os títulos usam o desempate definido pelo organizador. Resultados podem ser corrigidos pela organização.</p>`:empty('Uma nova temporada','O ranking aparece após o encerramento dos torneios do mês.');
-}
-async function load(){const version=++request;$('#playerStatus').textContent='Atualizando dados da temporada…';$('#playerStatus').classList.remove('player-error');try{const [er,rr]=await Promise.all([fetch('/api/events'),fetch('/api/ranking?month='+encodeURIComponent($('#journeyMonth').value)+'&game='+game)]);const [ed,rd]=await Promise.all([er.json(),rr.json()]);if(version!==request)return;if(!er.ok||!rr.ok)throw Error(ed.error||rd.error||'Falha ao consultar os dados.');events=ed.events.map(r=>r.event);ranking=rd;render();$('#playerStatus').textContent='Dados atualizados · '+GAMES[game].name+' · Área de consulta';}catch(e){if(version!==request)return;events=[];ranking=null;$('#personalSummary').innerHTML='';$('#playerEvents').innerHTML='';$('#playerRankTable').innerHTML='';$('#playerStatus').textContent=e.message+' Use Atualizar dados para tentar novamente.';$('#playerStatus').classList.add('player-error');}}
-$('#journeyForm').onsubmit=e=>{e.preventDefault();try{localStorage.setItem('kingdom-player-id',playerId());}catch{}load();};$('#playerRefresh').onclick=load;$('#playerSearch').oninput=render;$('#playerFilter').onchange=render;tabs();load();
+import { $, escapeOptionalHtml as esc } from './ui/dom.js';
+import { hasCut, champion, matchLabel } from './top-cut.mjs';
+import { GAMES, gameOf } from './swiss-core.mjs';
 
+let game = 'yugioh',
+  events = [],
+  ranking = null,
+  request = 0;
+try {
+  game = Object.hasOwn(GAMES, localStorage.getItem('duel-arena-game'))
+    ? localStorage.getItem('duel-arena-game')
+    : game;
+  $('#journeyId').value = localStorage.getItem('kingdom-player-id') || '';
+} catch {}
+const requestedGame = new URLSearchParams(location.search).get('game');
+if (Object.hasOwn(GAMES, requestedGame)) {
+  game = requestedGame;
+  try {
+    localStorage.setItem('duel-arena-game', game);
+  } catch {}
+}
+const parts = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/Sao_Paulo',
+  year: 'numeric',
+  month: '2-digit',
+}).formatToParts(new Date());
+$('#journeyMonth').value =
+  parts.find((p) => p.type === 'year').value +
+  '-' +
+  parts.find((p) => p.type === 'month').value;
+const playerId = () => $('#journeyId').value.trim().toUpperCase();
+const empty = (title, text) => /* HTML */ `
+  <div class="empty">
+    <h3>${esc(title)}</h3>
+    <p>${esc(text)}</p>
+  </div>
+`;
+const badge = (p) =>
+  p.monthlyTitle
+    ? /* HTML */ `
+        <span class="monthly-tier tier-${esc(p.monthlyTitle.id)}">
+          ${esc(p.monthlyTitle.label)}
+        </span>
+      `
+    : '—';
+function tabs() {
+  $('.game-tabs').innerHTML = Object.entries(GAMES)
+    .map(
+      ([id, g]) => /* HTML */ `
+        <button role="tab" aria-selected="${id === game}" data-game="${id}">
+          ${esc(g.name)}
+        </button>
+      `,
+    )
+    .join('');
+  document.querySelectorAll('.game-tabs button[data-game]').forEach(
+    (b) =>
+      (b.onclick = () => {
+        game = b.dataset.game;
+        try {
+          localStorage.setItem('duel-arena-game', game);
+        } catch {}
+        tabs();
+        load();
+      }),
+  );
+}
+function render() {
+  const id = playerId(),
+    me = id ? ranking?.standings.find((p) => p.rankingId === id) : null;
+  $('#personalSummary').innerHTML = !id
+    ? empty(
+        'Sua jornada tem um ID',
+        'Informe o ID cadastrado pelo organizador para consultar seu histórico e suas mesas.',
+      )
+    : me
+      ? /* HTML */ `
+          <article class="player-personal">
+            <span class="eyebrow">SUA TEMPORADA · ${esc(GAMES[game].name)}</span>
+            <h2>${esc(me.name)}</h2>
+            ${badge(me)}
+            <div class="personal-stats">
+              <div>
+                <span>Posição no mês</span>
+                <strong>${me.rank}º</strong>
+              </div>
+              <div>
+                <span>Pontos acumulados</span>
+                <strong>${me.points}</strong>
+              </div>
+              <div>
+                <span>Torneios concluídos</span>
+                <strong>${me.events}</strong>
+              </div>
+            </div>
+            <p>${me.wins} vitórias · ${me.draws || 0} empates · ${me.losses} derrotas</p>
+          </article>
+        `
+      : empty(
+          'Seu próximo resultado começa aqui',
+          'Não há resultados de torneios encerrados para este ID no jogo e mês selecionados. Confira abaixo suas inscrições e mesas.',
+        );
+  const filter = $('#playerFilter').value,
+    query = $('#playerSearch').value.trim().toLocaleLowerCase('pt-BR'),
+    month = $('#journeyMonth').value;
+  const list = events.filter(
+    (e) =>
+      gameOf(e) === game &&
+      e.date.slice(0, 7) === month &&
+      (filter === 'all' ||
+        (filter === 'mine' &&
+          id &&
+          e.players.some((p) => p.rankingId?.trim().toUpperCase() === id)) ||
+        e.status === filter) &&
+      `${e.name} ${e.location}`.toLocaleLowerCase('pt-BR').includes(query),
+  );
+  $('#playerEvents').innerHTML = list.length
+    ? list
+        .map((e) => {
+          const p = id
+            ? e.players.find((p) => p.rankingId?.trim().toUpperCase() === id)
+            : null;
+          const matches = p
+            ? e.matches
+                .filter((m) => m.a === p.id || m.b === p.id)
+                .sort((a, b) => b.round - a.round)
+            : [];
+          return /* HTML */ `
+            <article class="player-event">
+              <div class="event-top">
+                <div>
+                  <h3>${esc(e.name)}</h3>
+                  <p>
+                    ${esc(e.date.split('-').reverse().join('/'))} · ${esc(e.time)} ·
+                    ${esc(e.location)}
+                  </p>
+                </div>
+                <span class="badge ${esc(e.status)}">
+                  ${{
+                    open: 'Inscrições abertas',
+                    live: 'Em andamento',
+                    done: 'Encerrado',
+                  }[e.status] || ''}
+                </span>
+              </div>
+              <p>
+                ${esc(e.format)} · ${e.players.length}/${e.capacity} participantes ·
+                ${e.rounds} rodadas
+                suíças${hasCut(e) && e.cutPlan.size
+                  ? ' · Top ' + e.cutPlan.size
+                  : ''}${champion(e)
+                  ? ' · Campeão: ' +
+                    esc(e.players.find((p) => p.id === champion(e))?.name)
+                  : ''}
+              </p>
+              ${p
+                ? /* HTML */ `
+                    <p><b>Inscrição encontrada: ${esc(p.name)}</b></p>
+                    ${matches.length
+                      ? matches
+                          .map((m) => {
+                            const opp = e.players.find(
+                              (x) => x.id === (m.a === p.id ? m.b : m.a),
+                            );
+                            const result =
+                              m.result === 'double'
+                                ? 'Derrota dupla'
+                                : m.result === 'bye'
+                                  ? 'Vitória por bye'
+                                  : m.result === 'draw'
+                                    ? 'Empate'
+                                    : !m.result
+                                      ? 'Aguardando resultado'
+                                      : m.result === (m.a === p.id ? 'a' : 'b')
+                                        ? 'Vitória'
+                                        : 'Derrota';
+                            return /* HTML */ `
+                              <div class="my-match">
+                                <p>
+                                  <b>
+                                    ${matchLabel(e, m)} ·
+                                    ${m.result === 'bye' ? 'Bye' : 'Mesa ' + m.table}
+                                  </b>
+                                </p>
+                                <p>
+                                  ${opp ? 'Contra ' + esc(opp.name) : 'Sem adversário'} ·
+                                  ${result}
+                                </p>
+                              </div>
+                            `;
+                          })
+                          .join('')
+                      : '<p>Suas mesas aparecerão quando o organizador publicar os emparceiramentos.</p>'}
+                  `
+                : '<p>' +
+                  esc(
+                    id
+                      ? 'Este ID não está inscrito neste torneio.'
+                      : 'Consulte seu ID para encontrar suas mesas.',
+                  ) +
+                  '</p>'}
+              <details>
+                <summary>Participantes (${e.players.length})</summary>
+                <p>
+                  ${e.players.map((p) => esc(p.name)).join(' · ') ||
+                  'Nenhum participante cadastrado.'}
+                </p>
+              </details>
+            </article>
+          `;
+        })
+        .join('')
+    : empty(
+        'Nenhum torneio encontrado',
+        'Escolha outro mês ou ajuste os filtros. Para se inscrever, fale com o organizador.',
+      );
+  const rows = ranking?.standings || [];
+  $('#playerRankTable').innerHTML = rows.length
+    ? /* HTML */ `
+        <div class="ranking-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Pos.</th>
+                <th>Jogador</th>
+                ${['yugioh', 'pokemon', 'onepiece'].includes(game)
+                  ? '<th>Elo do mês</th>'
+                  : ''}
+                <th>Pontos</th>
+                <th>Torneios</th>
+                <th>V–E–D</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows
+                .map(
+                  (p) => /* HTML */ `
+                    <tr class="${id && p.rankingId === id ? 'player-highlight' : ''}">
+                      <td>${p.rank}º</td>
+                      <td>
+                        ${esc(p.name)}${id && p.rankingId === id
+                          ? ' · ID consultado'
+                          : ''}
+                      </td>
+                      ${['yugioh', 'pokemon', 'onepiece'].includes(game)
+                        ? '<td>' + badge(p) + '</td>'
+                        : ''}
+                      <td><b>${p.points}</b></td>
+                      <td>${p.events}</td>
+                      <td>${p.wins}–${p.draws || 0}–${p.losses}</td>
+                    </tr>
+                  `,
+                )
+                .join('')}
+            </tbody>
+          </table>
+        </div>
+        <p class="honors-note">
+          Elos calculados pelas regras da liga. Pokémon e One Piece têm um campeão e até
+          quatro integrantes na faixa seguinte; os títulos usam o desempate definido pelo
+          organizador. Resultados podem ser corrigidos pela organização.
+        </p>
+      `
+    : empty(
+        'Uma nova temporada',
+        'O ranking aparece após o encerramento dos torneios do mês.',
+      );
+}
+async function load() {
+  const version = ++request;
+  $('#playerStatus').textContent = 'Atualizando dados da temporada…';
+  $('#playerStatus').classList.remove('player-error');
+  try {
+    const [er, rr] = await Promise.all([
+      fetch('/api/events'),
+      fetch(
+        '/api/ranking?month=' +
+          encodeURIComponent($('#journeyMonth').value) +
+          '&game=' +
+          game,
+      ),
+    ]);
+    const [ed, rd] = await Promise.all([er.json(), rr.json()]);
+    if (version !== request) return;
+    if (!er.ok || !rr.ok)
+      throw Error(ed.error || rd.error || 'Falha ao consultar os dados.');
+    events = ed.events.map((r) => r.event);
+    ranking = rd;
+    render();
+    $('#playerStatus').textContent =
+      'Dados atualizados · ' + GAMES[game].name + ' · Área de consulta';
+  } catch (e) {
+    if (version !== request) return;
+    events = [];
+    ranking = null;
+    $('#personalSummary').innerHTML = '';
+    $('#playerEvents').innerHTML = '';
+    $('#playerRankTable').innerHTML = '';
+    $('#playerStatus').textContent =
+      e.message + ' Use Atualizar dados para tentar novamente.';
+    $('#playerStatus').classList.add('player-error');
+  }
+}
+$('#journeyForm').onsubmit = (e) => {
+  e.preventDefault();
+  try {
+    localStorage.setItem('kingdom-player-id', playerId());
+  } catch {}
+  load();
+};
+$('#playerRefresh').onclick = load;
+$('#playerSearch').oninput = render;
+$('#playerFilter').onchange = render;
+tabs();
+load();

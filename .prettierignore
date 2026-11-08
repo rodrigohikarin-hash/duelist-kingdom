@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.git/
+.next/
+.vinext/
+.wrangler/
+.sites-runtime/
+vendor/
+components/
+examples/
+public/qrcode-lib.mjs
+public/chibi/
+public/worlds/
+scripts/connector-preview/
+scripts/vite/
+package-lock.json

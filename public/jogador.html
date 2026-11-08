@@ -1,10 +1,144 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Duelist Kingdom · Espaço do jogador</title><meta name="theme-color" content="#14121c"><script src="theme.js"></script><link rel="icon" href="kingdom-icon.svg"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="ubw.css"><link rel="stylesheet" href="kingdom.css"><link rel="stylesheet" href="polish.css"><link rel="stylesheet" href="player.css"><link rel="stylesheet" href="/game-worlds.css"><script src="/game-worlds.js"></script></head><body class="player-space">
-<aside><a class="brand" href="jogador.html"><img src="kingdom-icon.svg" width="38" height="42" alt=""><span class="brand-words">DUELIST<span>KINGDOM</span></span></a><div class="edition">ESPAÇO DO JOGADOR</div><div class="forge-mark">SUA JORNADA NO REINO</div><small>ACOMPANHE SUA TEMPORADA</small><nav aria-label="Navegação do jogador"><a href="#journey" class="active">✦ <span>Minha jornada</span></a><a href="#playerTournaments">▦ <span>Torneios e mesas</span></a><a href="#playerRanking">♜ <span>Ranking mensal</span></a></nav><div class="side-bottom"><p>Consulte seus resultados pelo ID cadastrado pelo organizador.</p><a href="/organizador" class="text">Ir para o organizador ↗</a></div></aside>
-<div class="shell"><header><span>Jogador <span class="muted">/ Sua temporada</span></span><div><a href="/" class="text">Trocar perfil</a><div class="space-switch" aria-label="Escolher espaço"><a href="/organizador">Organizador</a><a href="jogador.html" aria-current="page">Jogador</a></div><div class="theme-switch" aria-label="Aparência do site"><button data-theme-choice="light">☼ Claro</button><button data-theme-choice="dark">☾ Escuro</button></div></div></header>
-<div class="game-tabs" role="tablist" aria-label="Modalidade do torneio"></div><main>
-<section id="journey"><div class="eyebrow">SEU PRÓXIMO CAPÍTULO COMEÇA AQUI</div><h1>Espaço do jogador<span>.</span></h1><p>Encontre suas mesas, acompanhe os resultados e conquiste seu lugar no ranking.</p>
-<form id="journeyForm" class="panel monthly-controls"><label>Seu ID do ranking<input id="journeyId" maxlength="40" pattern="[A-Za-z0-9_-]+" placeholder="Ex.: ARENA-001" autocomplete="off"></label><label>Mês da temporada<input id="journeyMonth" type="month" required></label><button class="primary" type="submit">Consultar jornada</button></form><p id="playerStatus" role="status">Carregando a temporada…</p><div id="personalSummary"></div></section>
-<section id="playerTournaments"><div class="section-head"><div><div class="eyebrow">ENCONTRE SEU PRÓXIMO DUELO</div><h2>Torneios e mesas</h2></div><button class="secondary" id="playerRefresh">Atualizar dados</button></div><div class="panel player-filters"><label>Buscar torneio<input id="playerSearch" placeholder="Nome ou local"></label><label>Situação<select id="playerFilter"><option value="all">Todos os torneios</option><option value="mine">Somente meus torneios</option><option value="open">Inscrições abertas</option><option value="live">Em andamento</option><option value="done">Encerrados</option></select></label></div><div id="playerEvents"></div></section>
-<section id="playerRanking"><div class="eyebrow">A COMUNIDADE EM CADA POSIÇÃO</div><h2>Ranking mensal</h2><p>Resultados dos torneios encerrados no mês escolhido. Seu ID fica destacado na tabela.</p><div id="playerRankTable"></div></section>
-<footer><span>◈ DUELIST KINGDOM</span><span>Área de consulta · inscrições e correções de resultados são feitas pelo organizador.</span></footer></main></div><script type="module" src="player.js"></script></body></html>
-
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Duelist Kingdom · Espaço do jogador</title>
+    <meta name="theme-color" content="#14121c" />
+    <script src="theme.js"></script>
+    <link rel="icon" href="kingdom-icon.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="ubw.css" />
+    <link rel="stylesheet" href="kingdom.css" />
+    <link rel="stylesheet" href="polish.css" />
+    <link rel="stylesheet" href="player.css" />
+    <link rel="stylesheet" href="/game-worlds.css" />
+    <script src="/game-worlds.js"></script>
+  </head>
+  <body class="player-space">
+    <aside>
+      <a class="brand" href="jogador.html">
+        <img src="kingdom-icon.svg" width="38" height="42" alt="" />
+        <span class="brand-words">
+          DUELIST
+          <span>KINGDOM</span>
+        </span>
+      </a>
+      <div class="edition">ESPAÇO DO JOGADOR</div>
+      <div class="forge-mark">SUA JORNADA NO REINO</div>
+      <small>ACOMPANHE SUA TEMPORADA</small>
+      <nav aria-label="Navegação do jogador">
+        <a href="#journey" class="active">
+          ✦
+          <span>Minha jornada</span>
+        </a>
+        <a href="#playerTournaments">
+          ▦
+          <span>Torneios e mesas</span>
+        </a>
+        <a href="#playerRanking">
+          ♜
+          <span>Ranking mensal</span>
+        </a>
+      </nav>
+      <div class="side-bottom">
+        <p>Consulte seus resultados pelo ID cadastrado pelo organizador.</p>
+        <a href="/organizador" class="text">Ir para o organizador ↗</a>
+      </div>
+    </aside>
+    <div class="shell">
+      <header>
+        <span>
+          Jogador
+          <span class="muted">/ Sua temporada</span>
+        </span>
+        <div>
+          <a href="/" class="text">Trocar perfil</a>
+          <div class="space-switch" aria-label="Escolher espaço">
+            <a href="/organizador">Organizador</a>
+            <a href="jogador.html" aria-current="page">Jogador</a>
+          </div>
+          <div class="theme-switch" aria-label="Aparência do site">
+            <button data-theme-choice="light">☼ Claro</button>
+            <button data-theme-choice="dark">☾ Escuro</button>
+          </div>
+        </div>
+      </header>
+      <div class="game-tabs" role="tablist" aria-label="Modalidade do torneio"></div>
+      <main>
+        <section id="journey">
+          <div class="eyebrow">SEU PRÓXIMO CAPÍTULO COMEÇA AQUI</div>
+          <h1>
+            Espaço do jogador
+            <span>.</span>
+          </h1>
+          <p>
+            Encontre suas mesas, acompanhe os resultados e conquiste seu lugar no ranking.
+          </p>
+          <form id="journeyForm" class="panel monthly-controls">
+            <label>
+              Seu ID do ranking
+              <input
+                id="journeyId"
+                maxlength="40"
+                pattern="[A-Za-z0-9_-]+"
+                placeholder="Ex.: ARENA-001"
+                autocomplete="off"
+              />
+            </label>
+            <label>
+              Mês da temporada
+              <input id="journeyMonth" type="month" required />
+            </label>
+            <button class="primary" type="submit">Consultar jornada</button>
+          </form>
+          <p id="playerStatus" role="status">Carregando a temporada…</p>
+          <div id="personalSummary"></div>
+        </section>
+        <section id="playerTournaments">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">ENCONTRE SEU PRÓXIMO DUELO</div>
+              <h2>Torneios e mesas</h2>
+            </div>
+            <button class="secondary" id="playerRefresh">Atualizar dados</button>
+          </div>
+          <div class="panel player-filters">
+            <label>
+              Buscar torneio
+              <input id="playerSearch" placeholder="Nome ou local" />
+            </label>
+            <label>
+              Situação
+              <select id="playerFilter">
+                <option value="all">Todos os torneios</option>
+                <option value="mine">Somente meus torneios</option>
+                <option value="open">Inscrições abertas</option>
+                <option value="live">Em andamento</option>
+                <option value="done">Encerrados</option>
+              </select>
+            </label>
+          </div>
+          <div id="playerEvents"></div>
+        </section>
+        <section id="playerRanking">
+          <div class="eyebrow">A COMUNIDADE EM CADA POSIÇÃO</div>
+          <h2>Ranking mensal</h2>
+          <p>
+            Resultados dos torneios encerrados no mês escolhido. Seu ID fica destacado na
+            tabela.
+          </p>
+          <div id="playerRankTable"></div>
+        </section>
+        <footer>
+          <span>◈ DUELIST KINGDOM</span>
+          <span>
+            Área de consulta · inscrições e correções de resultados são feitas pelo
+            organizador.
+          </span>
+        </footer>
+      </main>
+    </div>
+    <script type="module" src="player.js"></script>
+  </body>
+</html>

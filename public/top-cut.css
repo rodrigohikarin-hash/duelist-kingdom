@@ -1,4 +1,136 @@
-[data-create-cut]{border:1px solid var(--border,#84739b55);border-radius:16px;margin:18px 0;padding:18px} [data-create-cut] legend{font-weight:700;padding:0 8px}[data-create-cut] .notice{margin-bottom:0}.cut-heading{display:flex;justify-content:space-between;align-items:center;gap:20px}.cut-heading h2{margin:8px 0}.cut-heading h2 span{color:#b28c4b}.cut-heading p{margin:8px 0}.cut-plan,.cut-seeding{padding-top:18px;border-top:1px solid #84739b44;margin-top:20px}.cut-seeds{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.cut-check{display:flex;align-items:center;gap:10px;margin:20px 0}.cut-check input{width:auto}.cut-bracket{display:flex;overflow-x:auto;gap:22px;padding:18px 0 28px;align-items:center}.cut-column{min-width:260px;flex:1}.cut-column h3{font-size:18px}.cut-column>p{font-size:12px}.cut-match{border:1px solid #9984ad55;border-radius:14px;padding:12px;margin:16px 0;background:var(--surface,rgba(128,111,144,.07))}.cut-contender{display:flex;align-items:center;gap:12px;padding:12px 8px;border-radius:7px}.cut-contender span{font-size:12px;opacity:.6}.cut-winner{background:#b38a3725;color:var(--text,inherit)}.cut-match small{opacity:.7;font-size:11px}.cut-champion{display:flex;align-items:center;gap:20px;padding:24px;border-radius:18px;background:linear-gradient(120deg,#b38b3733,#8a6eb522);border:1px solid #b38b3755;margin:24px 0}.cut-champion>span{font-size:48px;color:#bd963f}.cut-champion h3{font-size:26px;margin:5px 0}.cut-champion p{margin:0}.cut-champion small{letter-spacing:1.5px}@media(max-width:600px){.cut-heading{display:block}.cut-seeds{grid-template-columns:1fr}}
+[data-create-cut] {
+  border: 1px solid var(--border, #84739b55);
+  border-radius: 16px;
+  margin: 18px 0;
+  padding: 18px;
+}
+[data-create-cut] legend {
+  font-weight: 700;
+  padding: 0 8px;
+}
+[data-create-cut] .notice {
+  margin-bottom: 0;
+}
+.cut-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.cut-heading h2 {
+  margin: 8px 0;
+}
+.cut-heading h2 span {
+  color: #b28c4b;
+}
+.cut-heading p {
+  margin: 8px 0;
+}
+.cut-plan,
+.cut-seeding {
+  padding-top: 18px;
+  border-top: 1px solid #84739b44;
+  margin-top: 20px;
+}
+.cut-seeds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.cut-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+.cut-check input {
+  width: auto;
+}
+.cut-bracket {
+  display: flex;
+  overflow-x: auto;
+  gap: 22px;
+  padding: 18px 0 28px;
+  align-items: center;
+}
+.cut-column {
+  min-width: 260px;
+  flex: 1;
+}
+.cut-column h3 {
+  font-size: 18px;
+}
+.cut-column > p {
+  font-size: 12px;
+}
+.cut-match {
+  border: 1px solid #9984ad55;
+  border-radius: 14px;
+  padding: 12px;
+  margin: 16px 0;
+  background: var(--surface, rgba(128, 111, 144, 0.07));
+}
+.cut-contender {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  border-radius: 7px;
+}
+.cut-contender span {
+  font-size: 12px;
+  opacity: 0.6;
+}
+.cut-winner {
+  background: #b38a3725;
+  color: var(--text, inherit);
+}
+.cut-match small {
+  opacity: 0.7;
+  font-size: 11px;
+}
+.cut-champion {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 18px;
+  background: linear-gradient(120deg, #b38b3733, #8a6eb522);
+  border: 1px solid #b38b3755;
+  margin: 24px 0;
+}
+.cut-champion > span {
+  font-size: 48px;
+  color: #bd963f;
+}
+.cut-champion h3 {
+  font-size: 26px;
+  margin: 5px 0;
+}
+.cut-champion p {
+  margin: 0;
+}
+.cut-champion small {
+  letter-spacing: 1.5px;
+}
+@media (max-width: 600px) {
+  .cut-heading {
+    display: block;
+  }
+  .cut-seeds {
+    grid-template-columns: 1fr;
+  }
+}
 
-.cut-match select{width:100%;margin:12px 0;font-size:13px}.cut-match small:last-child{display:block;margin-top:8px}
-.cut-bracket{align-items:flex-start}
+.cut-match select {
+  width: 100%;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.cut-match small:last-child {
+  display: block;
+  margin-top: 8px;
+}
+.cut-bracket {
+  align-items: flex-start;
+}

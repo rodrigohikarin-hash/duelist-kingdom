@@ -1,3 +1,315 @@
-.league-space header{height:auto;min-height:86px;padding:18px 5vw}.league-space .brand{gap:10px}.league-space .brand-words{font-weight:700!important;font-size:23px}.league-space .brand-words>span{font-size:19px}.league-space main{max-width:1240px;padding:28px 30px}.league-space #leagueStatus{font-size:12px;color:var(--muted);margin:0 0 24px;line-height:1.8}.league-space #leagueStatus.error{color:var(--accent);padding:14px;background:var(--accent-soft);border-radius:8px}.store-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:25px 0}.store-card{border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--surface)}.store-card h2{font:600 30px 'Cormorant Garamond',Georgia,serif;margin:8px 0}.store-card p{min-height:42px}.store-heading{display:flex;justify-content:space-between;gap:24px;align-items:center;margin-top:20px}.workspace-actions{display:flex;gap:10px;flex-wrap:wrap}.store-navigation{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.store-navigation label{margin:0;min-width:180px}.store-navigation a{margin-left:auto}.league-space textarea{display:block;width:100%;min-height:85px;border:1px solid var(--line);border-radius:8px;background:var(--input);color:var(--ink);font:inherit;padding:12px;margin-top:8px;resize:vertical}.check{display:flex;align-items:center;gap:10px}.check input{width:18px;min-height:18px}.league-event{margin:18px 0;padding:24px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}.league-event h3{margin:0;font-size:17px}.league-event .section-head p{font-size:12px}.league-event details{border-top:1px solid var(--line);margin-top:18px;padding-top:18px}.league-event .actions{display:flex;gap:9px;flex-wrap:wrap;align-items:end;margin:16px 0}.league-event .actions label{margin:0;flex:1;min-width:160px}.league-space button{cursor:pointer}.league-space button:disabled{cursor:wait}.wallet{background:linear-gradient(120deg,var(--accent-soft),var(--surface));padding:25px;border:1px solid var(--accent-border);border-radius:14px;margin:20px 0}.wallet strong{font-size:34px;display:block;margin:10px 0}.reward-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:18px 0}.reward{padding:20px;background:var(--soft);border-radius:10px}.reward h3{font-size:15px}.league-space .metrics{grid-template-columns:repeat(4,1fr)}.league-space .metrics small{display:block;color:var(--muted);font-size:10px;line-height:1.7}.league-space .metrics strong{font-size:24px}.qr-box{padding:20px;background:var(--soft);border-radius:12px;margin:12px 0}.qr-box img{width:200px;height:200px;display:block;background:white;padding:10px;border-radius:8px}.qr-box input{margin:10px 0;font-size:11px}.checkin-banner{padding:18px;background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:10px}.report-card{padding:18px;border:1px solid var(--line);border-radius:10px;margin:12px 0}.report-card .inline{align-items:center;flex-wrap:wrap}.league-space summary{cursor:pointer}.league-space code{overflow-wrap:anywhere}.team-row{padding:12px;border-top:1px solid var(--line);display:flex;gap:14px;align-items:center;flex-wrap:wrap}.team-row code{flex:1;font-size:11px}.loyalty-row{padding:13px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;font-size:12px}.loyalty-row b{white-space:nowrap}.league-space #legacyWorkspace{display:inline-block;margin-top:16px}.league-space table{min-width:640px}.store-card .eyebrow{font-size:9px}
-@media(max-width:760px){.league-space header{padding:15px 18px;gap:14px}.league-space header>div{flex-wrap:wrap;gap:10px}.league-space .brand-words{font-size:20px}.league-space .brand-words>span{font-size:17px}.league-space main{padding:25px 18px}.store-heading{align-items:flex-start;flex-direction:column;gap:12px}.league-space .metrics{grid-template-columns:1fr 1fr}.store-navigation{gap:14px}.store-navigation label{min-width:0;flex:1 1 100%}.store-navigation a{margin:0}.league-event{padding:19px}.league-space .inline{flex-wrap:wrap}.league-space .inline label{min-width:100%;margin-bottom:5px}.league-space .metrics strong{font-size:21px}.league-space h1{overflow-wrap:anywhere}.league-event .section-head{align-items:flex-start}.qr-box img{max-width:100%;height:auto}}
-.store-heading{border-left:3px solid var(--accent-border);padding-left:20px}.league-space h1{color:var(--ink)}
+.league-space header {
+  height: auto;
+  min-height: 86px;
+  padding: 18px 5vw;
+}
+.league-space .brand {
+  gap: 10px;
+}
+.league-space .brand-words {
+  font-weight: 700 !important;
+  font-size: 23px;
+}
+.league-space .brand-words > span {
+  font-size: 19px;
+}
+.league-space main {
+  max-width: 1240px;
+  padding: 28px 30px;
+}
+.league-space #leagueStatus {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 24px;
+  line-height: 1.8;
+}
+.league-space #leagueStatus.error {
+  color: var(--accent);
+  padding: 14px;
+  background: var(--accent-soft);
+  border-radius: 8px;
+}
+.store-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 25px 0;
+}
+.store-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px;
+  background: var(--surface);
+}
+.store-card h2 {
+  font:
+    600 30px 'Cormorant Garamond',
+    Georgia,
+    serif;
+  margin: 8px 0;
+}
+.store-card p {
+  min-height: 42px;
+}
+.store-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  margin-top: 20px;
+}
+.workspace-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.store-navigation {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.store-navigation label {
+  margin: 0;
+  min-width: 180px;
+}
+.store-navigation a {
+  margin-left: auto;
+}
+.league-space textarea {
+  display: block;
+  width: 100%;
+  min-height: 85px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--input);
+  color: var(--ink);
+  font: inherit;
+  padding: 12px;
+  margin-top: 8px;
+  resize: vertical;
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.check input {
+  width: 18px;
+  min-height: 18px;
+}
+.league-event {
+  margin: 18px 0;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.league-event h3 {
+  margin: 0;
+  font-size: 17px;
+}
+.league-event .section-head p {
+  font-size: 12px;
+}
+.league-event details {
+  border-top: 1px solid var(--line);
+  margin-top: 18px;
+  padding-top: 18px;
+}
+.league-event .actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  align-items: end;
+  margin: 16px 0;
+}
+.league-event .actions label {
+  margin: 0;
+  flex: 1;
+  min-width: 160px;
+}
+.league-space button {
+  cursor: pointer;
+}
+.league-space button:disabled {
+  cursor: wait;
+}
+.wallet {
+  background: linear-gradient(120deg, var(--accent-soft), var(--surface));
+  padding: 25px;
+  border: 1px solid var(--accent-border);
+  border-radius: 14px;
+  margin: 20px 0;
+}
+.wallet strong {
+  font-size: 34px;
+  display: block;
+  margin: 10px 0;
+}
+.reward-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+.reward {
+  padding: 20px;
+  background: var(--soft);
+  border-radius: 10px;
+}
+.reward h3 {
+  font-size: 15px;
+}
+.league-space .metrics {
+  grid-template-columns: repeat(4, 1fr);
+}
+.league-space .metrics small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+.league-space .metrics strong {
+  font-size: 24px;
+}
+.qr-box {
+  padding: 20px;
+  background: var(--soft);
+  border-radius: 12px;
+  margin: 12px 0;
+}
+.qr-box img {
+  width: 200px;
+  height: 200px;
+  display: block;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+}
+.qr-box input {
+  margin: 10px 0;
+  font-size: 11px;
+}
+.checkin-banner {
+  padding: 18px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: 10px;
+}
+.report-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin: 12px 0;
+}
+.report-card .inline {
+  align-items: center;
+  flex-wrap: wrap;
+}
+.league-space summary {
+  cursor: pointer;
+}
+.league-space code {
+  overflow-wrap: anywhere;
+}
+.team-row {
+  padding: 12px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.team-row code {
+  flex: 1;
+  font-size: 11px;
+}
+.loyalty-row {
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  font-size: 12px;
+}
+.loyalty-row b {
+  white-space: nowrap;
+}
+.league-space #legacyWorkspace {
+  display: inline-block;
+  margin-top: 16px;
+}
+.league-space table {
+  min-width: 640px;
+}
+.store-card .eyebrow {
+  font-size: 9px;
+}
+@media (max-width: 760px) {
+  .league-space header {
+    padding: 15px 18px;
+    gap: 14px;
+  }
+  .league-space header > div {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .league-space .brand-words {
+    font-size: 20px;
+  }
+  .league-space .brand-words > span {
+    font-size: 17px;
+  }
+  .league-space main {
+    padding: 25px 18px;
+  }
+  .store-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .league-space .metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+  .store-navigation {
+    gap: 14px;
+  }
+  .store-navigation label {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+  .store-navigation a {
+    margin: 0;
+  }
+  .league-event {
+    padding: 19px;
+  }
+  .league-space .inline {
+    flex-wrap: wrap;
+  }
+  .league-space .inline label {
+    min-width: 100%;
+    margin-bottom: 5px;
+  }
+  .league-space .metrics strong {
+    font-size: 21px;
+  }
+  .league-space h1 {
+    overflow-wrap: anywhere;
+  }
+  .league-event .section-head {
+    align-items: flex-start;
+  }
+  .qr-box img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+.store-heading {
+  border-left: 3px solid var(--accent-border);
+  padding-left: 20px;
+}
+.league-space h1 {
+  color: var(--ink);
+}
